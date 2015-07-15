@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-# custom dependencies
-gem 'friendly_id', '~> 5.1.0'
+#custom gems
+gem 'authlogic', '~> 3.4.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150712195831) do
+ActiveRecord::Schema.define(version: 20150715180329) do
 
   create_table "exercises", force: :cascade do |t|
     t.string   "name"
@@ -32,5 +32,15 @@ ActiveRecord::Schema.define(version: 20150712195831) do
   end
 
   add_index "source_files", ["exercise_id"], name: "index_source_files_on_exercise_id"
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "crypted_password"
+    t.string   "password_salt"
+    t.string   "persistence_token"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
 end

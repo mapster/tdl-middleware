@@ -9,20 +9,22 @@ class ResourceBaseController < ApplicationController
     private
 
     def only_modifiable_fields
-        non_modifiable = @json.keys - @@modifiable
-        unless non_modifiable.empty?
-            render json: Hash[non_modifiable.map {|f| [f, "Field not modifiable"]}],  status: :bad_request
-        end
+        has_only_entries @json.keys, @@modifiable, "Field not modifiable."
     end
 
     def has_required_fields
-        missing_required = @@required - @json.keys
-        unless missing_required.empty?
-            render json: Hash[missing_required.map {|f| [f, "Required field missing."]}],  status: :bad_request
+        has_only_entries @@required, @json.keys, "Required field missing."
+    end
+
+    def has_only_entries list, entries, message
+        extra_entries = list - entries 
+        if not extra_entries.empty?
+            render json: Hash[extra_entries.map {|f| [f, message]}], status: :bad_request
         end
     end
 
     def parse_request
         @json = JSON.parse(request.body.read)
+        puts "json: #{@json}"
     end
 end
