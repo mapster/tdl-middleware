@@ -2,8 +2,8 @@ class UsersController < ResourceBaseController
     @@modifiable = ["name", "email", "password", "password_confirmation"]
     @@required = @@modifiable
 
+    before_filter :authorize_by_authentication, only: [:show, :update, :destroy]
     before_filter :get_user, only: [:show, :update, :destroy]
-    before_filter :authenticated, only: [:show, :update, :destroy]
 
     # reassign payload validation filters
     skip_before_filter :has_required_fields, only: [:update]

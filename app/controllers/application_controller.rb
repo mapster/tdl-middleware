@@ -15,8 +15,10 @@ class ApplicationController < ActionController::Base
         @current_user ||= current_user_session && current_user_session.user
     end
 
-    def authenticated
-        puts (not current_user.nil?)
-        not current_user.nil?
+    def authorize_by_authentication
+        puts "user: #{current_user.nil?}"
+        if current_user.nil?
+            render nothing: true, status: :forbidden
+        end
     end
 end
