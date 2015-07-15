@@ -3,11 +3,11 @@ Rails.application.routes.draw do
 
     resource :user_session, only: [:show, :create, :destroy]
     resource :users, only: [:show, :create, :update, :destroy] do
-        resources :user_authorizations
+        resource :user_authorizations, only: [:show, :create, :destroy]
     end
 
-    resources :exercises do
-        resources :source_files
+    resources :exercises, only: [:index, :show, :create, :update, :destroy] do
+        resources :source_files, only: [:index, :show, :create, :update, :destroy]
     end
 
 
