@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 
+  manage_exercises: false
+  manage_users: false
+  manage_authorizations: false
+
+two:
+  user_id: 
+  manage_exercises: false
+  manage_users: false
+  manage_authorizations: false

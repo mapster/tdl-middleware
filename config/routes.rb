@@ -2,7 +2,9 @@ Rails.application.routes.draw do
     root 'users#index'
 
     resource :user_session, only: [:show, :create, :destroy]
-    resource :users, only: [:show, :create, :update, :destroy]
+    resource :users, only: [:show, :create, :update, :destroy] do
+        resources :user_authorizations
+    end
 
     resources :exercises do
         resources :source_files
