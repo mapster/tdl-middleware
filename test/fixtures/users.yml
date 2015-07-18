@@ -1,11 +1,22 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  email: MyString
-  password: MyString
+jolly:
+  name: Jolly Person
+  email: jolly.person@email.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
 
-two:
-  name: MyString
-  email: MyString
-  password: MyString
+happy:
+  name: Happy Person
+  email: happy.person@email.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+
+exercise_manager:
+  name: Exercise Manager
+  email: exercise.manager@email.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>

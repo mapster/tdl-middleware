@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
     skip_before_filter :verify_authenticity_token
 
-    helper_method :current_user_session, :current_user
-
     private
     def current_user_session
         @current_user_session ||= UserSession.find
@@ -16,9 +14,18 @@ class ApplicationController < ActionController::Base
     end
 
     def authorize_by_authentication
-        puts "user: #{current_user.nil?}"
         if current_user.nil?
             render nothing: true, status: :forbidden
         end
+    end
+
+    def authorized? (action)
+        return false if current_user.nil?
+        auth = current_user.user_authorization
+        return false if auth.nil?
+
+        raise SecurityError, "No such authorizable action: #{action}" unless auth.respond_to? 'manage_exercises'
+
+        auth.public_send action
     end
 end

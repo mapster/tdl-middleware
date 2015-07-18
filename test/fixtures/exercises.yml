@@ -1,9 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  id: MyString
-  name: MyString
+ex1:
+  name: exercise1
+  title: Exercise1 
+  kind: expectation
+  difficulty: 3
+  description: Bla bla
 
-two:
-  id: MyString
-  name: MyString
+ex2:
+  name: exercise2
+  title: Exercise2 
+  kind: expectation
+  difficulty: 4
+  description: Bla bla 2

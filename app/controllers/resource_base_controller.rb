@@ -25,6 +25,5 @@ class ResourceBaseController < ApplicationController
 
     def parse_request
         @json = JSON.parse(request.body.read)
-        puts "json: #{@json}"
     end
 end
