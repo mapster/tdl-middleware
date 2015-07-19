@@ -10,6 +10,12 @@ Rails.application.routes.draw do
         resources :source_files, only: [:index, :show, :create, :update, :destroy], defaults: {format: :json}
     end
 
+    namespace :admin do
+        resources :users, defaults: {format: :json} do
+            resource :user_autorizations, only: [:show, :create, :destroy], defaults: {format: :json}
+        end
+    end
+
 
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

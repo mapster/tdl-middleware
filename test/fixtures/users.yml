@@ -20,3 +20,10 @@ exercise_manager:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+
+user_manager:
+  name: User Manager
+  email: user.manager@email.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>

@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
     has_one :user_authorization
 
-    def as_json(options)
+    def as_json(options = nil)
         super(:only => [:name, :email])
     end
 end

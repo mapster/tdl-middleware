@@ -11,3 +11,9 @@ auth_exercise_manager:
   manage_exercises: true
   manage_users: false
   manage_authorizations: false
+
+auth_user_manager:
+  user: user_manager 
+  manage_exercises: false
+  manage_users: true
+  manage_authorizations: false
