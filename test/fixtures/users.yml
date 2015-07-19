@@ -27,3 +27,10 @@ user_manager:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+
+auth_manager:
+  name: Auth Manager
+  email: auth.manager@email.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("password123" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
