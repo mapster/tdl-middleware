@@ -1,7 +1,6 @@
 class ExercisesController < ResourceBaseController 
     MODIFIABLE = ["name", "title", "kind", "difficulty", "description"]
-    @@modifiable = ["name", "title", "kind", "difficulty", "description"]
-    @@required = @@modifiable
+    REQUIRED = MODIFIABLE
 
     before_filter :get_exercise, only: [:show, :update, :destroy]
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
@@ -47,5 +46,13 @@ class ExercisesController < ResourceBaseController
 
     def get_exercise
         @exercise = Exercise.find(params[:id])
+    end
+    
+    def modifiable
+        MODIFIABLE
+    end
+
+    def required
+       REQUIRED
     end
 end

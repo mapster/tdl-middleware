@@ -1,7 +1,6 @@
 class SourceFilesController < ResourceBaseController 
     MODIFIABLE = ["name", "contents"]
-    @@modifiable = ["name", "contents"]
-    @@required = @@modifiable
+    REQUIRED = MODIFIABLE
 
     before_filter :get_exercise, only: [:index, :show, :create, :update, :destroy]
     before_filter :get_source_file, only: [:show, :update, :destroy]
@@ -57,9 +56,11 @@ class SourceFilesController < ResourceBaseController
         render nothing: true, status: :forbidden unless authorized? :manage_exercises
     end
 
-    def redirect_to_source_file
-        get_exercise unless @exercise
-        get_source_file unless @source_file
-        redirect_to exercise_source_file_path(@exercise, @source_file)
+    def modifiable
+        MODIFIABLE
+    end
+
+    def required
+        REQUIRED
     end
 end
