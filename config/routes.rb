@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
     root 'users#index'
 
-    resource :user_session, only: [:show, :create, :destroy]
-    resource :users, only: [:show, :create, :update, :destroy] do
-        resource :user_authorizations, only: [:show, :create, :destroy]
+    resource :user_session, only: [:show, :create, :destroy], defaults: {format: :json}
+    resource :users, only: [:show, :create, :update, :destroy], defaults: {format: :json} do
+        resource :user_authorizations, only: [:show, :create, :destroy], defaults: {format: :json}
     end
 
-    resources :exercises, only: [:index, :show, :create, :update, :destroy] do
-        resources :source_files, only: [:index, :show, :create, :update, :destroy]
+    resources :exercises, only: [:index, :show, :create, :update, :destroy], defaults: {format: :json} do
+        resources :source_files, only: [:index, :show, :create, :update, :destroy], defaults: {format: :json}
     end
 
 
