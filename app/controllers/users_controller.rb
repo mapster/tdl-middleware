@@ -1,6 +1,6 @@
 class UsersController < ResourceBaseController 
-    @@modifiable = ["name", "email", "password", "password_confirmation"]
-    @@required = @@modifiable
+    MODIFIABLE = ["name", "email", "password", "password_confirmation"]
+    REQUIRED = MODIFIABLE
 
     before_filter :authorize_by_authentication, only: [:show, :update, :destroy]
     before_filter :get_user, only: [:show, :update, :destroy]
@@ -8,11 +8,6 @@ class UsersController < ResourceBaseController
     # reassign payload validation filters
     skip_before_filter :has_required_fields, only: [:update]
     before_filter :has_update_required_fields, only: [:update]
-
-    # should be removed
-    def index
-        render json: User.all
-    end
 
     def show
         render json: @user
@@ -51,6 +46,14 @@ class UsersController < ResourceBaseController
 
     def has_update_required_fields
         has_only_entries ["name", "email"], @json.keys, "Required field missing."
+    end
+
+    def modifiable
+        MODIFIABLE
+    end
+
+    def required
+        REQUIRED
     end
 
 end
