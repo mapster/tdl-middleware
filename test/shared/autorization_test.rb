@@ -47,7 +47,7 @@ module AuthorizationTest
             UserSession.create manager 
             create fixture
             assert_response :created
-            assert_equal path(fixture), response.location
+            assert_equal path_from_response, response.location
         end
 
         test "normal user should not be allowed to create" do

@@ -1,9 +1,11 @@
 class SourceFilesController < ResourceBaseController 
+    MODIFIABLE = ["name", "contents"]
     @@modifiable = ["name", "contents"]
     @@required = @@modifiable
 
     before_filter :get_exercise, only: [:index, :show, :create, :update, :destroy]
     before_filter :get_source_file, only: [:show, :update, :destroy]
+    before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
 
     def index
         render json: @exercise.source_files.all
@@ -17,7 +19,8 @@ class SourceFilesController < ResourceBaseController
         @source_file = @exercise.source_files.create!(@json)
 
         if @source_file.valid?
-            redirect_to_source_file
+            render json: @source_file, status: :created, 
+                :location => exercise_source_file_path(@exercise, @source_file)
         else
             render json: @source_file.errors.messages, status: :conflict
         end
@@ -25,7 +28,7 @@ class SourceFilesController < ResourceBaseController
 
     def update
         if @source_file.update(@json)
-            redirect_to_source_file
+            render json: @source_file
         else
             render json: @source_file.errors.messages, status: :bad_request
         end
@@ -48,6 +51,10 @@ class SourceFilesController < ResourceBaseController
     def get_source_file
         get_exercise unless @exercise
         @source_file = @exercise.source_files.find(params[:id])
+    end
+
+    def authorized_to_manage_exercises
+        render nothing: true, status: :forbidden unless authorized? :manage_exercises
     end
 
     def redirect_to_source_file

@@ -17,7 +17,7 @@ class ExercisesControllerTest < ActionController::TestCase
     private
     def create (exercise)
         fixture.name = "something else"
-        post_json :create, select_fields(exercise, ExercisesController::MODIFIABLE)
+        post_json :create, nil, select_fields(exercise, ExercisesController::MODIFIABLE)
     end
 
     def update (exercise)
@@ -36,7 +36,7 @@ class ExercisesControllerTest < ActionController::TestCase
         {'id' => exercise.id}
     end
     
-    def path exercise
+    def path_from_response
         exercise_path(JSON.parse(response.body)['id'])
     end
 

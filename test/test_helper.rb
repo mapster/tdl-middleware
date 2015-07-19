@@ -9,9 +9,9 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  def post_json (action, payload)
+  def post_json (action, path_params, payload)
       request.env['RAW_POST_DATA'] = payload.to_json
-      post action
+      post action, path_params
   end
 
   def put_json (action, path_params, payload)
