@@ -1,6 +1,6 @@
 class UserSessionsController < ResourceBaseController
-    @@modifiable = ["email", "password"]
-    @@required = @@modifiable
+    MODIFIABLE = ["email", "password"]
+    REQUIRED = MODIFIABLE
 
     def show 
         if current_user
@@ -26,5 +26,14 @@ class UserSessionsController < ResourceBaseController
         else
             render nothing: true, status: :not_found
         end
+    end
+
+    private
+    def modifiable
+        MODIFIABLE
+    end
+
+    def required
+        REQUIRED
     end
 end
