@@ -3,7 +3,7 @@ class Admin::UserAuthorizationsController < ResourceBaseController
     REQUIRED = MODIFIABLE
 
     before_filter :authorized_to_manage_authorizations
-    before_filter :get_auth, only: [:show, :destroy]
+    before_filter :get_auth
 
     def show
         render nothing: true, status: :not_found and return if @auth.nil?
@@ -11,14 +11,16 @@ class Admin::UserAuthorizationsController < ResourceBaseController
     end
 
     def create
-        #TODO Needs to delete old if it exists
-        @auth = UserAuthorization.new @json
-        @auth.user_id = params[:user_id]
+        new_auth = UserAuthorization.new @json
+        new_auth.user_id = params[:user_id]
 
-        if @auth.valid? and @auth.save
-            render json: @auth
+        if new_auth.valid?
+            @auth.destroy if @auth
+
+            new_auth.save
+            render json: new_auth
         else
-            render json: @auth.errors.messages, status: :bad_request
+            render json: new_auth.errors.messages, status: :bad_request
         end
     end
 
