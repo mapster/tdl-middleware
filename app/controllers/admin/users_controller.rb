@@ -3,7 +3,7 @@ class Admin::UsersController < UsersController
     before_filter :get_user, only: [:show, :update, :destroy]
 
     def index
-        render json: User.all
+        @users = User.all
     end
 
     private

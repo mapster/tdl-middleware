@@ -9,10 +9,6 @@ class UsersController < ResourceBaseController
     skip_before_filter :has_required_fields, only: [:update]
     before_filter :has_update_required_fields, only: [:update]
 
-    def show
-        render json: @user
-    end
-
     def create
         @user = User.new(@json)
 
