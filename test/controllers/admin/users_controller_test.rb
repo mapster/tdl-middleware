@@ -20,10 +20,15 @@ class Admin::UsersControllerTest < ActionController::TestCase
     def create (user)
         user.email = "another@email.com"
         user = user.as_json.merge({:password => "password123", :password_confirmation => "password123"})
-        post_json :create, nil, user
+        post_json :create, nil, modifiable_user(user)
     end
 
     def update (user)
-        put_json :update, path_params(user), user.as_json
+        put_json :update, path_params(user), modifiable_user(user)
+    end
+    
+    def modifiable_user (user)
+        user = user.as_json
+        user.select { |k,v| UsersController::MODIFIABLE.include? k.to_s }
     end
 end

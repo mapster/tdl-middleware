@@ -16,7 +16,7 @@ module AdminAuthorizationTest
         test "index allowed for authorized user" do
             if test_actions.include? :index 
                 UserSession.create manager
-                get :index
+                get :index, :format => :json
                 assert_response :success
             end
         end
@@ -34,7 +34,7 @@ module AdminAuthorizationTest
         test "show allowed for authorized user" do
             if test_actions.include? :show
                 UserSession.create manager
-                get :show, path_params(fixture)
+                get :show, path_params(fixture).merge({ :format => :json})
                 assert_response :success
             end
         end
