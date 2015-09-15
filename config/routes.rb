@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-        resources :users, defaults: {format: :json} do
+        resources :users, only: [:index, :show, :create, :update, :destroy], defaults: {format: :json} do
             resource :user_authorizations, only: [:show, :create, :destroy], defaults: {format: :json}
         end
     end
