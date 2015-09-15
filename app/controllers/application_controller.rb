@@ -23,8 +23,7 @@ class ApplicationController < ActionController::Base
         return false if current_user.nil?
         auth = current_user.user_authorization
         return false if auth.nil?
-
-        raise SecurityError, "No such authorizable action: #{action}" unless auth.respond_to? 'manage_exercises'
+        raise SecurityError, "No such authorizable action: #{action}" unless auth.respond_to? action
 
         auth.public_send action
     end
