@@ -1,9 +1,12 @@
 class UserAuthorizationsController < ResourceBaseController
+  before_filter :authorize_by_authentication
   
   def show
-    @auth = current_user.user_authorization
-    if @auth.nil?
+    user = current_user
+    if user.nil? || user.user_authorization.nil?
       render nothing: true, status: :not_found 
+    else 
+      @auth = user.user_authorization unless user.nil?
     end
   end  
 end
