@@ -1,14 +1,9 @@
 class UserAuthorizationsController < ResourceBaseController
-  before_filter :get_auth
   
-#  def show
-#    @auth = current_user.auth
-#    if @auth
-#      render 
-#    end
-#  end  
-  private
-  def get_auth
+  def show
     @auth = current_user.user_authorization
-  end
+    if @auth.nil?
+      render nothing: true, status: :not_found 
+    end
+  end  
 end
