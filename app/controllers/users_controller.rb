@@ -12,15 +12,19 @@ class UsersController < ResourceBaseController
     def create
         @user = User.new(@json)
 
+        
         if @user.valid? and @user.save
             render json: @user
         else
+            #TODO not correct to output conflict no matter what here (could be invalid password, email etc.)
             render json: @user.errors.messages, status: :conflict
         end
     end
 
     def update
-        if @user.update(@json)
+        if @user.nil?
+            render nothing: true, status: :not_found
+        elsif @user.update(@json)
             render json: @user
         else
             render json: @user.errors.messages, status: :bad_request
@@ -28,7 +32,9 @@ class UsersController < ResourceBaseController
     end
 
     def destroy
-        if @user.destroy
+        if @user.nil?
+            render nothing: true, status: :not_found        
+        elsif @user.destroy
             render nothing: true, status: :no_content
         else
             render nothing: true, status: :internal_server_error

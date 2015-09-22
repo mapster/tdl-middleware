@@ -10,7 +10,7 @@ class Admin::UserAuthorizationsController < ResourceBaseController
         render json: @auth
     end
 
-    def create
+    def update
         new_auth = UserAuthorization.new @json
         new_auth.user_id = params[:user_id]
 

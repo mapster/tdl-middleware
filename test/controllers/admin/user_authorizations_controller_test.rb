@@ -4,8 +4,12 @@ class Admin::UserAuthorizationsControllerTest < ActionController::TestCase
     setup :activate_authlogic
     include AdminAuthorizationTest
 
-    test "create should delete old auth if it exists" do
-        flunk "test needs to be implemented"
+    test "user should only have one associated auth after update" do
+        auth = user_authorizations(:auth_user_manager)
+        update(auth)
+        
+        user_auths = UserAuthorization.where(user_id: auth.user_id) 
+        assert_equal 1, user_auths.size
     end
 
     private
@@ -21,17 +25,13 @@ class Admin::UserAuthorizationsControllerTest < ActionController::TestCase
         {'id' => user_auth.id, 'user_id' => user_auth.user_id}
     end
 
-    def create (user_auth)
-        path_params = {'user_id' => user_auth.user_id}
-        post_json :create, path_params, select_fields(user_auth, Admin::UserAuthorizationsController::MODIFIABLE)
-    end
-
     def update (user_auth)
-        create user_auth
+        path_params = {'user_id' => user_auth.user_id}
+        post_json :update, path_params, select_fields(user_auth, Admin::UserAuthorizationsController::MODIFIABLE)
     end
 
     def test_actions
-        [:show, :create, :destroy]
+        [:show, :update, :destroy]
     end
 
 end
