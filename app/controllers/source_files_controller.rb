@@ -17,6 +17,7 @@ class SourceFilesController < ResourceBaseController
     def create
         @source_file = @exercise.source_files.create!(@json)
 
+        #TODO source_file.name should be unique 
         if @source_file.valid?
             render json: @source_file, status: :created, 
                 :location => exercise_source_file_path(@exercise, @source_file)
