@@ -7,7 +7,7 @@ class SourceFilesController < ResourceBaseController
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
 
     def index
-        render json: @exercise.source_files.all
+        render json: Hash[@exercise.source_files.all.map{|f| [f.name, f]}]
     end
 
     def show
@@ -22,6 +22,7 @@ class SourceFilesController < ResourceBaseController
             render json: @source_file, status: :created, 
                 :location => exercise_source_file_path(@exercise, @source_file)
         else
+            #TODO Not necesseraly conflict, could be bad request as well
             render json: @source_file.errors.messages, status: :conflict
         end
     end
