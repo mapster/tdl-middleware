@@ -1,6 +1,6 @@
 class ExercisesController < ResourceBaseController 
     MODIFIABLE = ["name", "title", "kind", "difficulty", "description"]
-    REQUIRED = MODIFIABLE
+    REQUIRED = ["name", "kind", "difficulty", "description"]
 
     before_filter :get_exercise, only: [:show, :update, :destroy]
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
@@ -19,11 +19,13 @@ class ExercisesController < ResourceBaseController
         if @exercise.valid? and @exercise.save
             render json: @exercise, status: :created, :location => exercise_path(@exercise)
         else
+            #TODO not correct to output conflict no matter what here (could be missing fields etc.)
             render json: @exercise.errors.messages, status: :conflict
         end
     end
 
     def update
+        # render nothing: true, status: :forbidden
         if @exercise.update(@json)
             render json: @exercise
         else
