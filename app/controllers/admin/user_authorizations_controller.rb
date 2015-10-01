@@ -1,6 +1,6 @@
 class Admin::UserAuthorizationsController < ResourceBaseController
     MODIFIABLE =  ['manage_exercises','manage_users','manage_authorizations']
-    REQUIRED = MODIFIABLE
+    REQUIRED = []
 
     before_filter :authorized_to_manage_authorizations
     before_filter :get_auth

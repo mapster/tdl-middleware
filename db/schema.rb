@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715205415) do
+ActiveRecord::Schema.define(version: 20150929201345) do
 
   create_table "exercises", force: :cascade do |t|
     t.string   "name"
@@ -35,9 +35,9 @@ ActiveRecord::Schema.define(version: 20150715205415) do
 
   create_table "user_authorizations", force: :cascade do |t|
     t.integer  "user_id"
-    t.boolean  "manage_exercises"
-    t.boolean  "manage_users"
-    t.boolean  "manage_authorizations"
+    t.boolean  "manage_exercises",      null: false
+    t.boolean  "manage_users",          null: false
+    t.boolean  "manage_authorizations", null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
