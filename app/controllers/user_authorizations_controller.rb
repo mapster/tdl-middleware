@@ -6,7 +6,7 @@ class UserAuthorizationsController < ResourceBaseController
     if user.nil? || user.user_authorization.nil?
       render nothing: true, status: :not_found 
     else 
-      @auth = user.user_authorization unless user.nil?
+      @auth = user.user_authorization
     end
   end  
 end

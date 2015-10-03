@@ -4,9 +4,7 @@ class UserSessionsController < ResourceBaseController
 
     def show 
         @user = current_user
-        if @user
-            render "users/show"
-        else
+        if @user.nil?
             render nothing: true, status: :not_found
         end
     end
@@ -15,7 +13,6 @@ class UserSessionsController < ResourceBaseController
         @user_session = UserSession.new @json
         if @user_session.save
             @user = current_user
-            render "users/show"
         else
             render nothing: true, status: :not_found
         end

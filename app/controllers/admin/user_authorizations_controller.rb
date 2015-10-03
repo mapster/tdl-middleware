@@ -6,11 +6,12 @@ class Admin::UserAuthorizationsController < ResourceBaseController
     before_filter :get_auth
 
     def show
-        render nothing: true, status: :not_found and return if @auth.nil?
-        render json: @auth
+        # render nothing: true, status: :forbidden and return
+        render nothing: true, status: :not_found if @auth.nil?
     end
 
     def update
+        # render nothing: true, status: :forbidden
         new_auth = UserAuthorization.new @json
         new_auth.user_id = params[:user_id]
 
@@ -18,7 +19,7 @@ class Admin::UserAuthorizationsController < ResourceBaseController
             @auth.destroy if @auth
 
             new_auth.save
-            render json: new_auth
+            @auth = new_auth
         else
             render json: new_auth.errors.messages, status: :bad_request
         end

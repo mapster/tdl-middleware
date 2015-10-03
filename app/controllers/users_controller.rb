@@ -10,28 +10,27 @@ class UsersController < ResourceBaseController
     before_filter :has_update_required_fields, only: [:update]
 
     def create
-        @user = User.new(@json)
+        user = User.new(@json)
 
-        
-        if @user.valid? and @user.save
-            render json: @user
+        if user.valid? and user.save
+            @user = user
         else
-            #TODO not correct to output conflict no matter what here (could be invalid password, email etc.)
-            render json: @user.errors.messages, status: :conflict
+            render json: user.errors.messages, status: :bad_request
         end
+        # render nothing: true, status: :forbidden
     end
 
     def update
         if @user.nil?
             render nothing: true, status: :not_found
-        elsif @user.update(@json)
-            render json: @user
-        else
+        elsif not @user.update(@json)
             render json: @user.errors.messages, status: :bad_request
         end
+        # render nothing: true, status: :not_found
     end
 
     def destroy
+            # render nothing: true, status: :not_found
         if @user.nil?
             render nothing: true, status: :not_found        
         elsif @user.destroy

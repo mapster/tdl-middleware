@@ -7,11 +7,10 @@ class SourceFilesController < ResourceBaseController
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
 
     def index
-        render json: Hash[@exercise.source_files.all.map{|f| [f.name, f]}]
+        @source_files = @exercise.source_files.all
     end
 
     def show
-        render json: @source_file
     end
 
     def create
@@ -19,18 +18,15 @@ class SourceFilesController < ResourceBaseController
 
         #TODO source_file.name should be unique 
         if @source_file.valid?
-            render json: @source_file, status: :created, 
+            render action: :show, status: :created, 
                 :location => exercise_source_file_path(@exercise, @source_file)
         else
-            #TODO Not necesseraly conflict, could be bad request as well
-            render json: @source_file.errors.messages, status: :conflict
+            render json: @source_file.errors.messages, status: :bad_request
         end
     end
 
     def update
-        if @source_file.update(@json)
-            render json: @source_file
-        else
+        if not @source_file.update(@json)
             render json: @source_file.errors.messages, status: :bad_request
         end
     end

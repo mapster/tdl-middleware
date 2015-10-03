@@ -6,29 +6,22 @@ class ExercisesController < ResourceBaseController
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
 
     def index
-        render json: Exercise.all
-    end
-
-    def show
-        render json: @exercise
+        @exercises = Exercise.all
     end
 
     def create
         @exercise = Exercise.new(@json)
 
         if @exercise.valid? and @exercise.save
-            render json: @exercise, status: :created, :location => exercise_path(@exercise)
+            render action: :show, status: :created, :location => exercise_path(@exercise)
         else
-            #TODO not correct to output conflict no matter what here (could be missing fields etc.)
-            render json: @exercise.errors.messages, status: :conflict
+            render json: @exercise.errors.messages, status: :bad_request
         end
     end
 
     def update
         # render nothing: true, status: :forbidden
-        if @exercise.update(@json)
-            render json: @exercise
-        else
+        if not @exercise.update(@json)
             render json: @exercise.errors.messages, status: :bad_request
         end
     end
