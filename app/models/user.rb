@@ -4,4 +4,5 @@ class User < ActiveRecord::Base
     validates :email, presence: true, uniqueness: true
 
     has_one :user_authorization
+    has_many :solutions
 end
