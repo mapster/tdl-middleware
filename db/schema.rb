@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001214703) do
+ActiveRecord::Schema.define(version: 20151006182100) do
 
   create_table "exercises", force: :cascade do |t|
     t.string   "name"
@@ -23,15 +23,26 @@ ActiveRecord::Schema.define(version: 20151001214703) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "source_files", force: :cascade do |t|
-    t.string   "name"
-    t.text     "contents"
+  create_table "solutions", force: :cascade do |t|
+    t.integer  "user_id"
     t.integer  "exercise_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  add_index "source_files", ["exercise_id"], name: "index_source_files_on_exercise_id"
+  add_index "solutions", ["exercise_id"], name: "index_solutions_on_exercise_id"
+  add_index "solutions", ["user_id"], name: "index_solutions_on_user_id"
+
+  create_table "source_files", force: :cascade do |t|
+    t.string   "name"
+    t.text     "contents"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "source_set_id"
+    t.string   "source_set_type"
+  end
+
+  add_index "source_files", ["source_set_type", "source_set_id"], name: "index_source_files_on_source_set_type_and_source_set_id"
 
   create_table "user_authorizations", force: :cascade do |t|
     t.integer  "user_id",                               null: false
