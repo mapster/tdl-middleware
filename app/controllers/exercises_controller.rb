@@ -6,6 +6,7 @@ class ExercisesController < ResourceBaseController
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
 
     def index
+        # render nothing: true, status: :forbidden and return
         @exercises = Exercise.all
     end
 
@@ -20,7 +21,7 @@ class ExercisesController < ResourceBaseController
     end
 
     def update
-        # render nothing: true, status: :forbidden
+        # render nothing: true, status: :forbidden and return
         if not @exercise.update(@json)
             render json: @exercise.errors.messages, status: :bad_request
         end

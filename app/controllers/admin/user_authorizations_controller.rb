@@ -11,7 +11,7 @@ class Admin::UserAuthorizationsController < ResourceBaseController
     end
 
     def update
-        # render nothing: true, status: :forbidden
+        # render nothing: true, status: :forbidden and return
         new_auth = UserAuthorization.new @json
         new_auth.user_id = params[:user_id]
 

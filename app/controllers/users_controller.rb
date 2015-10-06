@@ -30,7 +30,7 @@ class UsersController < ResourceBaseController
     end
 
     def destroy
-            # render nothing: true, status: :not_found
+            # render nothing: true, status: :not_found and return
         if @user.nil?
             render nothing: true, status: :not_found        
         elsif @user.destroy
