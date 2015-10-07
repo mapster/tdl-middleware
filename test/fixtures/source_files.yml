@@ -3,9 +3,9 @@
 sf1:
   name: File1.java
   contents: Some source code
-  exercise: ex1
+  source_set: ex1 (Exercise)
 
 two:
   name: MyString
   contents: MyText
-  exercise_id: 
+  source_set: 
