@@ -1,0 +1,2 @@
+class SolutionsController < ResourceBaseController
+end

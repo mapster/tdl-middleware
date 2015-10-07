@@ -13,3 +13,11 @@ ex2:
   kind: expectation
   difficulty: 4
   description: Bla bla 2
+
+ex_missing_solution:
+  name: exercise_missing_solution
+  title: Exercise that has no solution yet
+  kind: expectation
+  difficulty: 7
+  description: An exercise that doesn't have a solutin yet.
+  
