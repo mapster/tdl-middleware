@@ -5,12 +5,12 @@ class SourceFilesControllerTest < ActionController::TestCase
     include AuthorizationTest
 
     test "should get index" do
-        get :index, path_params(fixture)
+        get_json :index, path_params(fixture)
         assert_response :success
     end
 
     test "should get source_file" do
-        get :show, path_params(fixture)
+        get_json :show, path_params(fixture)
         assert_response :success
     end
 
