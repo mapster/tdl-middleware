@@ -5,12 +5,12 @@ class ExercisesControllerTest < ActionController::TestCase
     include AuthorizationTest
 
     test "should get index" do
-        get :index
+        get_json :index
         assert_response :success
     end
 
     test "should get exercise" do
-        get :show, path_params(fixture)
+        get_json :show, path_params(fixture)
         assert_response :success
     end
 

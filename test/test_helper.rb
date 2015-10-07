@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
       put action, json_format(path_params)
   end
   
-  def get_json (action, path_params)
+  def get_json (action, path_params=nil)
       get action, json_format(path_params)  
   end
 
