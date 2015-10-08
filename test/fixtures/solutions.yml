@@ -1,2 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+jolly_ex1_solution:
+  user: jolly
+  exercise: ex1
+  
+jolly_ex2_solution:
+  user: jolly
+  exercise: ex2
+  
+happy_ex1_solution:
+  user: happy
+  exercise: ex1
