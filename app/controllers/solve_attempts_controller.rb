@@ -1,0 +1,2 @@
+class SolveAttemptsController < ApplicationController
+end

@@ -1,0 +1,2 @@
+module SolveAttemptsHelper
+end
