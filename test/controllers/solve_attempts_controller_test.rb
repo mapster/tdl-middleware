@@ -64,4 +64,66 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     get_json :show, {:solution_id => @solution.exercise_id, :id => solve_attempts(:happy_ex1_attempt1)}
     assert_response :not_found
   end
+  
+  #
+  # => Create
+  #
+  
+  test "create should return created" do
+    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    assert_response :created
+  end
+  
+  test "create should return forbidden for unauthenticated request" do
+    @session.destroy
+    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    assert_response :forbidden
+  end
+  
+  test "create should return a SolveAttempt with a new id" do
+    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    id = JSON.parse(response.body)['id']
+    assert id.is_a? Numeric
+    assert_not_nil SolveAttempt.find_by(id: id)
+  end
+  
+  test "create should return location in header" do
+    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    assert_equal users_solution_solve_attempt_path(@solution.exercise_id, JSON.parse(response.body)['id']), response.location
+  end
+  
+  test "create should require source_files" do
+    post_json :create, {:solution_id => @solution.exercise_id}, Hash.new.as_json
+    assert_response :bad_request
+  end
+  
+  test "create should store source_files in database" do
+    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    created_attempt = SolveAttempt.find(JSON.parse(response.body)['id'])
+    assert_not_nil created_attempt.source_files
+    assert_not_empty created_attempt.source_files
+    assert_equal new_fixture[:source_files].first[:name], created_attempt.source_files.first.name
+  end
+  
+  test "create should accept empty source_files" do
+    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => []}
+    assert_response :created
+  end
+  
+  test "creates should respond with bad_request if source_file is invalid" do
+    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => [:contents => 'bla bla']}
+    assert_response :bad_request
+    assert_nil SolveAttempt.find_by(id: assigns(:solve_attempt).id)
+  end
+  
+  private
+  def new_fixture
+    {:source_files => [{
+      :name => "Test1.java",
+      :contents => "bla bla"
+    },{
+      :name => "Test2.java",
+      :contents => "bla bla"
+    }]}
+  end
 end
