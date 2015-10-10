@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  Solution_id: 
+jolly_ex1_attempt1:
+  solution: jolly_ex1_solution
 
-two:
-  Solution_id: 
+jolly_ex1_attempt2:
+  solution: jolly_ex1_solution
