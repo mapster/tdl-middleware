@@ -1,4 +1,5 @@
 class SolutionsController < ResourceBaseController
+  before_filter :authorize_by_authentication
   before_filter :get_exercise, only: [:show]
   before_filter :get_solution, only: [:show]
     
@@ -14,7 +15,7 @@ class SolutionsController < ResourceBaseController
       end
     end
   end
-    
+  
   private
     
   def get_solution
