@@ -6,6 +6,13 @@ class SolveAttemptsController < ApplicationController
     @solve_attempts = SolveAttempt.where(solution_id: @solution.id)
   end
   
+  def show
+    @solve_attempt = SolveAttempt.find_by(id: params[:id], solution_id: @solution.id)
+    if @solve_attempt.nil?
+      render nothing: true, status: :not_found and return
+    end
+  end
+  
   private
     
   def get_solution

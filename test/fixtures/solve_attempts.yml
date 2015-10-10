@@ -5,3 +5,9 @@ jolly_ex1_attempt1:
 
 jolly_ex1_attempt2:
   solution: jolly_ex1_solution
+
+jolly_ex2_attempt1:
+  solution: jolly_ex2_solution
+  
+happy_ex1_attempt1:
+  solution: happy_ex1_solution
