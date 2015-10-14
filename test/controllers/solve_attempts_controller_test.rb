@@ -3,6 +3,45 @@ require 'test_helper'
 class SolveAttemptsControllerTest < ActionController::TestCase
   setup :activate_authlogic
   
+  COMPILATION_REPORT = 
+    '{
+      "compilationReport": {
+        "entries": [{
+            "message":"cannot find symbol\n  symbol:   method asertTrue(boolean)\n  location: class FailTest",
+            "code":"compiler.err.cant.resolve.location.args",
+            "lineNumber":24,
+            "columnNumber":5,
+            "sourceName":"FailTest.java",
+            "kind":"ERROR"
+        }],
+        "reportLevel":"ERROR"
+      }
+    }'
+  TEST_REPORT = 
+    '{
+      "junitReport": {
+        "failedTests": 2,
+        "failures": [
+          {
+            "actual": "false",
+            "expected": "true",
+            "failureType": "ComparisonFailure",
+            "testClassName": "FailTest",
+            "testMethodName": "failingTest"
+          },
+          {
+            "failureType": "AssertionError",
+            "testClassName": "FailTest",
+            "testMethodName": "failingTest2"
+          }
+        ],
+        "ignored": 1,
+        "runTime": 1,
+        "tests": 3
+      }
+    }'
+  
+  
   def setup
     @user = users :jolly
     @solution = solutions(:jolly_ex1_solution)
@@ -114,6 +153,15 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => [:contents => 'bla bla']}
     assert_response :bad_request
     assert_nil SolveAttempt.find_by(id: assigns(:solve_attempt).id)
+  end
+  
+  test "create should add the test report" do
+    def @controller.jcoru_test (x); TEST_REPORT end
+    
+    files = [source_files(:my_class_test), source_files(:my_class)].map {|f| select_fields f, ["name", "contents"]}
+    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => files}
+    
+    assert_not_empty assigns(:solve_attempt).report
   end
   
   private

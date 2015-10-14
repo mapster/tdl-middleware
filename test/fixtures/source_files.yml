@@ -9,3 +9,38 @@ two:
   name: MyString
   contents: MyText
   source_set: 
+
+my_class_test:
+  name: MyClassTest.java
+  contents: |
+    import static org.junit.Assert.assertEquals;
+    import static org.junit.Assert.assertTrue;
+    import org.junit.Test;
+    
+    public class MyClassTest {
+      
+      @Test
+      public void isTrueReturnsTrue() {
+        MyClass a = new MyClass();
+        assertTrue(a.isTrue());
+      }
+      
+      @Test
+      public void stringReturnsHello() {
+        MyClass b = new MyClass();
+        assertEquals(b.string(), "hello");
+      }    
+    }
+  
+my_class: 
+  name: MyClass.java
+  contents: |
+    public class MyClass {
+      public boolean isTrue() {
+        return true;
+      }
+      
+      public String string() {
+        return "hello";
+      }
+    }

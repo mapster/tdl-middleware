@@ -1,4 +1,6 @@
 class SolveAttemptsController < ResourceBaseController 
+  include JcoruHelper
+  
   REQUIRED = ["source_files"]
   MODIFIABLE = REQUIRED
   
@@ -30,6 +32,8 @@ class SolveAttemptsController < ResourceBaseController
         render json: {:source_files => errors}, status: :bad_request
       else 
         source_files.each {|sf| sf.save!}
+        @solve_attempt.report = jcoru_test source_files
+        @solve_attempt.save!
         render action: :show, status: :created, :location => users_solution_solve_attempt_path(@solution.exercise_id, @solve_attempt.id)
       end
     else
