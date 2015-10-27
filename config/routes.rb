@@ -4,7 +4,8 @@ Rails.application.routes.draw do
     resource :user_session, only: [:show, :create, :destroy], defaults: {format: :json}
     resource :users, only: [:show, :create, :update, :destroy], defaults: {format: :json} do
       resource :user_authorizations, only: [:show], defaults: {format: :json}
-      resources :solutions, only: [:index, :show, :create, :update, :destroy], defaults: {format: :json} do
+      resources :solutions, only: [:index, :show, :destroy], defaults: {format: :json} do
+        resources :source_files, controller: 'solution_source_files', only: [:index, :show, :create, :update, :destroy], defaults: {format: :json}
         resources :solve_attempts, only: [:index, :show, :create, :destroy], defaults: {format: :json}
       end
     end
