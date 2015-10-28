@@ -1,7 +1,8 @@
 class SourceFilesBaseController < ResourceBaseController
     MODIFIABLE = ["name", "contents"]
     REQUIRED = MODIFIABLE
-  
+    
+    before_filter :authorize_by_authentication
     before_filter :get_source_set, only: [:index, :show, :create, :update, :destroy]
     before_filter :existing_source_set, only: [:show, :update, :destroy]
     before_filter :get_source_file, only: [:show, :update, :destroy]

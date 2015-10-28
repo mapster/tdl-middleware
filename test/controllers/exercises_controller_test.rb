@@ -2,14 +2,17 @@ require 'test_helper'
 
 class ExercisesControllerTest < ActionController::TestCase
     setup :activate_authlogic
+    include AuthenticationTest
     include AuthorizationTest
 
     test "should get index" do
+        UserSession.create users(:jolly)
         get_json :index
         assert_response :success
     end
 
     test "should get exercise" do
+        UserSession.create users(:jolly)
         get_json :show, path_params(fixture)
         assert_response :success
     end

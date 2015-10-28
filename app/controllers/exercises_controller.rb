@@ -2,8 +2,9 @@ class ExercisesController < ResourceBaseController
     MODIFIABLE = ["name", "title", "kind", "difficulty", "description"]
     REQUIRED = ["name", "kind", "difficulty", "description"]
 
-    before_filter :get_exercise, only: [:show, :update, :destroy]
+    before_filter :authorize_by_authentication
     before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
+    before_filter :get_exercise, only: [:show, :update, :destroy]
 
     def index
         # render nothing: true, status: :forbidden and return

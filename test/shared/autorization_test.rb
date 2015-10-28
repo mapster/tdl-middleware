@@ -2,6 +2,7 @@ module AuthorizationTest
     extend ActiveSupport::Concern
 
     included do
+        setup :activate_authlogic
         ## delete
 
         test "normal user should not be allowed to delete" do
@@ -18,7 +19,7 @@ module AuthorizationTest
 
         test "unauthenticated request should not be allowed to delete" do
             delete :destroy, path_params(fixture)
-            assert_response :forbidden
+            assert_response :unauthorized
         end 
 
 
@@ -38,7 +39,7 @@ module AuthorizationTest
 
         test "unauthenticated request should not be allowed to update" do
             update fixture
-            assert_response :forbidden
+            assert_response :unauthorized
         end
 
         ## create 
@@ -64,7 +65,7 @@ module AuthorizationTest
 
         test "unauthenticated request should not be allowed to create" do
             create fixture
-            assert_response :forbidden
+            assert_response :unauthorized
         end
 
     end

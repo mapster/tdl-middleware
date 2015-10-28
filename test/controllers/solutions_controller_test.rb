@@ -45,15 +45,16 @@ class SolutionsControllerTest < ActionController::TestCase
     assert_not_includes assigns(:solutions), solutions(:happy_ex1_solution)
   end
   
+  # TODO Replace with AuthenticationTest module
   test ":show should be forbidden for unauthenticated request" do
     UserSession.find.destroy
     get_json :show, {:id => exercises(:ex1)}
-    assert_response :forbidden
+    assert_response :unauthorized
   end
   
   test ":index should be forbidden for unauthenticated request" do
     UserSession.find.destroy
     get_json :index
-    assert_response :forbidden
+    assert_response :unauthorized
   end
 end

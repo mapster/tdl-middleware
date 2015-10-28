@@ -57,10 +57,11 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     assert_response :success
   end  
   
+  # TODO Should be replaced with AuthenticationTest module
   test "index should return forbidden for unauthenticated request" do
     @session.destroy
     get_json :index, {:solution_id => @solution.exercise_id}
-    assert_response :forbidden
+    assert_response :unauthorized
   end  
   
   test "index should return all attempts for exercise solution" do
@@ -81,7 +82,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   test "show should return forbidden for unauthenticated request" do
     @session.destroy
     get_json :show, {:solution_id => @solution.exercise_id, :id => solve_attempts(:jolly_ex1_attempt1)}
-    assert_response :forbidden
+    assert_response :unauthorized
   end
   
   test "show should return requested solve attempt" do
@@ -116,7 +117,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   test "create should return forbidden for unauthenticated request" do
     @session.destroy
     post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
-    assert_response :forbidden
+    assert_response :unauthorized
   end
   
   test "create should return a SolveAttempt with a new id" do

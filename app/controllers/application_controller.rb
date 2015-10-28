@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
     def authorize_by_authentication
         if current_user.nil?
-            render nothing: true, status: :forbidden
+            render nothing: true, status: :unauthorized and return
         end
     end
 
