@@ -4,7 +4,7 @@ class SourceFilesController < SourceFilesBaseController
     private
 
     def get_source_set
-        @source_set = Exercise.find(params[:exercise_id])
+        @source_set = Exercise.find_by(id: params[:exercise_id])
     end
 
     def get_source_file

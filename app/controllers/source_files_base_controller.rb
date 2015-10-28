@@ -3,6 +3,7 @@ class SourceFilesBaseController < ResourceBaseController
     REQUIRED = MODIFIABLE
   
     before_filter :get_source_set, only: [:index, :show, :create, :update, :destroy]
+    before_filter :existing_source_set, only: [:show, :update, :destroy]
     before_filter :get_source_file, only: [:show, :update, :destroy]
     before_filter :existing_source_file, only: [:show, :update, :destroy]
   
@@ -37,6 +38,13 @@ class SourceFilesBaseController < ResourceBaseController
     end
     
     private 
+    
+    def existing_source_set
+        if @source_set.nil?
+            render nothing: true, status: :not_found and return
+        end   
+    end
+    
     def existing_source_file
         if @source_file.nil?
             render nothing: true, status: :not_found and return

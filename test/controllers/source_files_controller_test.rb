@@ -14,11 +14,15 @@ class SourceFilesControllerTest < ActionController::TestCase
         assert_response :success
     end
     
-    test "should respond with :not_found for show non existing" do
+    test "should respond with :not_found for non existing source_file" do
         get_json :show, {'id' => 1, 'exercise_id' => fixture.exercise_id}
         assert_response :not_found
     end
-    
+
+    test "should respond with :not_found for non existing source_set" do
+        get_json :show, {'id' => fixture.id, 'exercise_id' => 1}
+    end
+        
     test "should create source_file" do
         sf = select_fields(fixture, SourceFilesController::MODIFIABLE)
         sf["name"] = "new_name"
