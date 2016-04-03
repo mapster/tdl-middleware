@@ -1,10 +1,4 @@
 class SolutionSourceFilesController < SourceFilesBaseController 
-    # before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
-    
-    def show
-      
-    end
-
     private
 
     def get_source_set
@@ -17,12 +11,8 @@ class SolutionSourceFilesController < SourceFilesBaseController
     end
     
     def source_file_path
-        solution_source_file_path(@source_set, @source_file)
+        users_solution_source_file_path(@source_set, @source_file)
     end
-      
-    # def authorized_to_manage_exercises
-        # render nothing: true, status: :forbidden unless authorized? :manage_exercises
-    # end
 
     def modifiable
         MODIFIABLE

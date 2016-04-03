@@ -2,6 +2,8 @@ require 'test_helper'
 
 class SourceFilesControllerTest < ActionController::TestCase
     include SourceFilesBaseTest
+    include AuthorizationTest
+    include AuthenticationTest
 
     private
 
@@ -16,13 +18,19 @@ class SourceFilesControllerTest < ActionController::TestCase
     def manager
         users(:exercise_manager)
     end
+    
+    def new_fixture
+        sf = fixture.dup
+        sf.name = "newname"
+        sf
+    end
 
     def fixture
         source_files(:sf1)
     end
 
     def path_params source_file
-        {'id' => source_file.id, 'exercise_id' => source_file.source_set_id}
+        {'id' => source_file.id, 'exercise_id' => source_file.exercise_id}
     end
     
     def path_from_response 

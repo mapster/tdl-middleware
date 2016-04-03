@@ -46,25 +46,25 @@ module AuthorizationTest
 
         test "create should return created with location in header" do
             UserSession.create manager 
-            create fixture
+            create new_fixture
             assert_response :created
             assert_equal path_from_response, response.location
         end
 
         test "normal user should not be allowed to create" do
             UserSession.create users(:jolly)
-            create fixture
+            create new_fixture
             assert_response :forbidden
         end
 
         test "authorized user should be allowed to create" do
             UserSession.create manager
-            create fixture
+            create new_fixture
             assert_response :success
         end
 
         test "unauthenticated request should not be allowed to create" do
-            create fixture
+            create new_fixture
             assert_response :unauthorized
         end
 

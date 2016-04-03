@@ -13,12 +13,18 @@ class SourceFile < ActiveRecord::Base
   end
   
   def exercise_id
-      return nil unless source_set_type == "Exercise"
-      source_set_id
+    return exercise.id unless exercise.nil?
+    nil
   end
   
   def exercise
-      return nil unless source_set_type == "Exercise"
-      source_set
+    if source_set_type == "Exercise"
+      source_set        
+    elsif source_set_type == "Solution"
+      source_set.exercise        
+    else
+      nil
+    end
   end
+
 end

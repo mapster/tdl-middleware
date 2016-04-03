@@ -31,6 +31,10 @@ class ExercisesControllerTest < ActionController::TestCase
         users(:exercise_manager)
     end
 
+    def new_fixture
+        fixture
+    end
+
     def fixture
         exercises(:ex1)
     end

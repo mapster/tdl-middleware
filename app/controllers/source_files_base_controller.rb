@@ -7,6 +7,7 @@ class SourceFilesBaseController < ResourceBaseController
     before_filter :existing_source_set, only: [:show, :update, :destroy]
     before_filter :get_source_file, only: [:show, :update, :destroy]
     before_filter :existing_source_file, only: [:show, :update, :destroy]
+    before_filter :unique_name, only: [:create, :update]
   
     def index
         @source_files = @source_set.source_files.all
@@ -15,7 +16,6 @@ class SourceFilesBaseController < ResourceBaseController
     def create
         @source_file = @source_set.source_files.create!(@json)
 
-        #TODO source_file.name should be unique 
         if @source_file.valid?
             render action: :show, status: :created, 
                 :location => source_file_path
@@ -39,6 +39,15 @@ class SourceFilesBaseController < ResourceBaseController
     end
     
     private 
+    
+    def unique_name
+        sf = SourceFile.new @json
+        existing = @source_set.source_files.find_by(name: sf.name) 
+        # Verify that there either not exists any file with the name, or that if it does it is the same file (i.e. update)
+        if existing && (@source_file.nil? || existing.id != @source_file.id) 
+          render plain: "Duplicate name: a source file with name #{sf.name} already exists", status: :conflict and return
+        end
+    end
     
     def existing_source_set
         if @source_set.nil?

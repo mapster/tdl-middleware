@@ -1,9 +1,14 @@
 require 'test_helper'
 
 class SolutionSourceFilesControllerTest < ActionController::TestCase
-    # include SourceFilesBaseTest
+    include SourceFilesBaseTest
+    include AuthenticationTest
     
     private
+    
+    def test_actions
+      [:show, :create, :index]
+    end
 
     def create source_file
         post_json :create, {'solution_id' => source_file.exercise_id}, select_fields(source_file, SolutionSourceFilesController::MODIFIABLE)
@@ -14,16 +19,21 @@ class SolutionSourceFilesControllerTest < ActionController::TestCase
     # end
 # 
     def manager
-        users(:exercise_manager)
+        users(:jolly)
+    end
+ 
+    def new_fixture
+        sf = source_files(:sf1_jolly_ex1_solution).dup
+        sf.name = "new name"
+        sf
     end
  
     def fixture
-        source_files(:sf1)
+        f = source_files(:sf1_jolly_ex1_solution)
     end
  
     def path_params source_file
-        # TODO source_set_id is incorrect here, should be the exercise_id of the solution that has source_set_id
-        {'id' => source_file.id, 'solution_id' => source_file.source_set_id}
+        {'id' => source_file.id, 'solution_id' => source_file.exercise_id}
     end
      
     # def path_from_response 

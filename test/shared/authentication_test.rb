@@ -44,7 +44,7 @@ module AuthenticationTest
         test "create forbidden for unauthenticated user" do
             if test_actions.include? :create
                 ensure_no_session
-                create fixture
+                create new_fixture
                 assert_response :unauthorized
             end
         end
@@ -52,7 +52,7 @@ module AuthenticationTest
         test "create allowed for authenticated user" do
             if test_actions.include? :create
                 UserSession.create manager
-                create fixture
+                create new_fixture
                 assert_response :success
             end
         end

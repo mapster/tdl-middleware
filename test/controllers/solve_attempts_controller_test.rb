@@ -104,48 +104,48 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   #
   
   test "create should return created" do
-    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    create new_fixture
     assert_response :created
   end
   
   test "create should return forbidden for unauthenticated request" do
     @session.destroy
-    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    create new_fixture
     assert_response :unauthorized
   end
   
   test "create should return a SolveAttempt with a new id" do
-    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    create new_fixture
     id = JSON.parse(response.body)['id']
     assert id.is_a? Numeric
     assert_not_nil SolveAttempt.find_by(id: id)
   end
   
   test "create should return location in header" do
-    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    create new_fixture
     assert_equal users_solution_solve_attempt_path(@solution.exercise_id, JSON.parse(response.body)['id']), response.location
   end
   
   test "create should require source_files" do
-    post_json :create, {:solution_id => @solution.exercise_id}, Hash.new.as_json
+    post_json :create, {:solution_id => @solution.exercise_id},{}
     assert_response :bad_request
   end
   
   test "create should store source_files in database" do
-    post_json :create, {:solution_id => @solution.exercise_id}, new_fixture
+    create new_fixture
     created_attempt = SolveAttempt.find(JSON.parse(response.body)['id'])
     assert_not_nil created_attempt.source_files
     assert_not_empty created_attempt.source_files
-    assert_equal new_fixture[:source_files].first[:name], created_attempt.source_files.first.name
+    assert_equal new_fixture.source_files.first.name, created_attempt.source_files.first.name
   end
   
   test "create should accept empty source_files" do
-    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => []}
+    create SolveAttempt.new(:solution => @solution)
     assert_response :created
   end
   
   test "creates should respond with bad_request if source_file is invalid" do
-    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => [:contents => 'bla bla']}
+    create SolveAttempt.new(:solution => @solution, :source_files => [SourceFile.new(:contents => "bla bla")])
     assert_response :bad_request
     assert_nil SolveAttempt.find_by(id: assigns(:solve_attempt).id)
   end
@@ -153,9 +153,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   test "create should add the test report" do
     def @controller.jcoru_test (x); TEST_REPORT end
     
-    files = source_files(:my_class_test, :my_class).map {|f| select_fields f, ["name", "contents"]}
-    post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => files}
-    
+    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
     assert_not_empty assigns(:solve_attempt).report
   end
   
@@ -170,7 +168,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   
   def create (solve_attempt)
     attempt = select_fields(solve_attempt, SolveAttemptsController::MODIFIABLE)
-    attempt[:source_files] = [select_fields(source_files(:my_class), ["name", "contents"])]
+    attempt[:source_files] = solve_attempt.source_files.map { |sf| select_fields(sf, ["name", "contents"]) }
     post_json :create, {'solution_id' => solve_attempt.solution.exercise_id}, attempt 
   end
   
@@ -183,12 +181,6 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   end
   
   def new_fixture
-    {:source_files => [{
-      :name => "Test1.java",
-      :contents => "bla bla"
-    },{
-      :name => "Test2.java",
-      :contents => "bla bla"
-    }]}
+    fixture
   end
 end

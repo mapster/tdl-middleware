@@ -50,4 +50,7 @@ sf1_jolly_ex1_attempt1:
   contents: Some source code
   source_set: jolly_ex1_attempt1 (SolveAttempt)
 
-  
+sf1_jolly_ex1_solution:
+  name: File1.java
+  contents: Some source code
+  source_set: jolly_ex1_solution (Solution)
