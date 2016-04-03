@@ -2,6 +2,7 @@ require 'test_helper'
 
 class SolveAttemptsControllerTest < ActionController::TestCase
   setup :activate_authlogic
+  include AuthenticationTest
   
   COMPILATION_REPORT = 
     '{
@@ -55,13 +56,6 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   test "index should return success" do
     get_json :index, {:solution_id => @solution.exercise_id}
     assert_response :success
-  end  
-  
-  # TODO Should be replaced with AuthenticationTest module
-  test "index should return forbidden for unauthenticated request" do
-    @session.destroy
-    get_json :index, {:solution_id => @solution.exercise_id}
-    assert_response :unauthorized
   end  
   
   test "index should return all attempts for exercise solution" do
@@ -159,13 +153,35 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   test "create should add the test report" do
     def @controller.jcoru_test (x); TEST_REPORT end
     
-    files = [source_files(:my_class_test), source_files(:my_class)].map {|f| select_fields f, ["name", "contents"]}
+    files = source_files(:my_class_test, :my_class).map {|f| select_fields f, ["name", "contents"]}
     post_json :create, {:solution_id => @solution.exercise_id}, {:source_files => files}
     
     assert_not_empty assigns(:solve_attempt).report
   end
   
   private
+  def test_actions
+    [:show, :index, :create]
+  end
+  
+  def manager
+    users(:jolly)
+  end
+  
+  def create (solve_attempt)
+    attempt = select_fields(solve_attempt, SolveAttemptsController::MODIFIABLE)
+    attempt[:source_files] = [select_fields(source_files(:my_class), ["name", "contents"])]
+    post_json :create, {'solution_id' => solve_attempt.solution.exercise_id}, attempt 
+  end
+  
+  def fixture
+    solve_attempts(:jolly_ex1_attempt1)
+  end
+  
+  def path_params solve_attempt
+    {'id' => solve_attempt.id, 'solution_id' => solve_attempt.solution.exercise_id}
+  end
+  
   def new_fixture
     {:source_files => [{
       :name => "Test1.java",

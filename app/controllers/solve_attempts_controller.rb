@@ -44,6 +44,7 @@ class SolveAttemptsController < ResourceBaseController
   
   private
     
+  #the :solution_id param of this controller actually refers to exercise id
   def get_solution
    @solution = Solution.find_by(user_id: current_user.id, exercise_id: params[:solution_id])
   end

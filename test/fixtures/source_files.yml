@@ -44,3 +44,10 @@ my_class:
         return "hello";
       }
     }
+
+sf1_jolly_ex1_attempt1:
+  name: File1.java
+  contents: Some source code
+  source_set: jolly_ex1_attempt1 (SolveAttempt)
+
+  

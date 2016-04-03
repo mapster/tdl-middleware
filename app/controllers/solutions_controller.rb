@@ -18,6 +18,8 @@ class SolutionsController < ResourceBaseController
   
   private
     
+  # the :id param of this controller (which should've referred to the id of a particular Solution instance) 
+  # instead refers to the id of the Exercise it is associated with.
   def get_solution
    @solution = Solution.find_by(user_id: current_user.id, exercise_id: params[:id])
   end

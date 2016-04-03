@@ -1,5 +1,9 @@
 class SolutionSourceFilesController < SourceFilesBaseController 
     # before_filter :authorized_to_manage_exercises, only: [:create, :update, :destroy]
+    
+    def show
+      
+    end
 
     private
 

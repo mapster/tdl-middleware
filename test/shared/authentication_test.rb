@@ -7,6 +7,7 @@ module AuthenticationTest
         #
         test "index forbidden for unauthenticated user" do
             if test_actions.include? :index 
+                ensure_no_session
                 get_json :index, path_params(fixture)
                 assert_response :unauthorized
             end
@@ -24,6 +25,7 @@ module AuthenticationTest
         #
         test "show forbidden for unauthenticated user" do
             if test_actions.include? :show
+                ensure_no_session
                 get_json :show, path_params(fixture)
                 assert_response :unauthorized
             end
@@ -41,6 +43,7 @@ module AuthenticationTest
         #
         test "create forbidden for unauthenticated user" do
             if test_actions.include? :create
+                ensure_no_session
                 create fixture
                 assert_response :unauthorized
             end
@@ -58,6 +61,7 @@ module AuthenticationTest
         #
         test "update forbidden for unauthenticated user" do
             if test_actions.include? :update
+                ensure_no_session
                 update fixture
                 assert_response :unauthorized
             end
@@ -75,6 +79,7 @@ module AuthenticationTest
         #
         test "delete forbidden for unauthenticated user" do
             if test_actions.include? :destroy
+                ensure_no_session
                 delete :destroy, path_params(fixture)
                 assert_response :unauthorized
             end
@@ -87,6 +92,11 @@ module AuthenticationTest
                 assert_response :success
             end
         end
+    end
+    
+    def ensure_no_session
+      session = UserSession.find
+      session.destroy unless session.nil?
     end
 
     def test_actions
