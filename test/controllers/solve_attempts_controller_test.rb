@@ -47,6 +47,9 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     @user = users :jolly
     @solution = solutions(:jolly_ex1_solution)
     @session = UserSession.create @user
+    
+    @mock = JcoruMock.new
+    @controller.jcoru_proxy = @mock 
   end
 
   #
@@ -126,6 +129,11 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     assert_equal users_solution_solve_attempt_path(@solution.exercise_id, JSON.parse(response.body)['id']), response.location
   end
   
+  test "create should fail with not found for non-existing solution" do
+    create SolveAttempt.new(:solution => Solution.new(:exercise_id => 1), :source_files => source_files(:my_class, :my_class_test))
+    assert_response :not_found
+  end
+  
   test "create should require source_files" do
     post_json :create, {:solution_id => @solution.exercise_id},{}
     assert_response :bad_request
@@ -151,10 +159,29 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   end
   
   test "create should add the test report" do
-    def @controller.jcoru_test (x); TEST_REPORT end
-    
+    @mock.report = TEST_REPORT
     create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
-    assert_not_empty assigns(:solve_attempt).report
+    assert_equal TEST_REPORT, assigns(:solve_attempt).report
+  end
+  
+  test "create should send exercise sources to jcoru" do
+    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
+    @solution.exercise.source_files.map { |sf| assert_includes @mock.test_files, sf } 
+  end
+  
+  test "create should set solution for solve attempt" do
+    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
+    assert_equal @solution, assigns(:solve_attempt).solution
+  end
+  
+  test "create should not accept overriding exercise sources" do
+    fail "tbd"
+    # test that response is bad request (or something else)
+  end
+  
+  test "create should not send overridden exercise sources to jcoru" do
+    fail "tbd"
+    # test that jcoru receives the files from the exercise.source_files
   end
   
   private

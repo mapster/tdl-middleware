@@ -1,11 +1,15 @@
-class SolveAttemptsController < ResourceBaseController 
-  include JcoruHelper
-  
+class SolveAttemptsController < ResourceBaseController
   REQUIRED = ["source_files"]
   MODIFIABLE = REQUIRED
   
   before_filter :authorize_by_authentication
   before_filter :get_solution
+  
+  attr_accessor :jcoru_proxy
+  
+  def initialize
+    @jcoru_proxy = JcoruProxy.new
+  end
   
   def index
     @solve_attempts = SolveAttempt.where(solution_id: @solution.id)
@@ -19,7 +23,7 @@ class SolveAttemptsController < ResourceBaseController
   end
   
   def create
-    @solve_attempt = SolveAttempt.create
+    @solve_attempt = SolveAttempt.create(solution: @solution)
     if @solve_attempt.valid?
       source_files = @json['source_files'].map do |sf| 
         source_file = SourceFile.new sf
@@ -32,7 +36,7 @@ class SolveAttemptsController < ResourceBaseController
         render json: {:source_files => errors}, status: :bad_request
       else 
         source_files.each {|sf| sf.save!}
-        @solve_attempt.report = jcoru_test source_files
+        @solve_attempt.report = @jcoru_proxy.run_junit(@solution.exercise.source_files | source_files)
         @solve_attempt.save!
         render action: :show, status: :created, :location => users_solution_solve_attempt_path(@solution.exercise_id, @solve_attempt.id)
       end
@@ -46,7 +50,10 @@ class SolveAttemptsController < ResourceBaseController
     
   #the :solution_id param of this controller actually refers to exercise id
   def get_solution
-   @solution = Solution.find_by(user_id: current_user.id, exercise_id: params[:solution_id])
+    @solution = Solution.find_by(user_id: current_user.id, exercise_id: params[:solution_id])
+    if @solution.nil?
+      render nothing: true, status: :not_found and return
+    end  
   end
   
   def required
