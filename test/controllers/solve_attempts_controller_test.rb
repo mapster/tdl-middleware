@@ -49,6 +49,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     @session = UserSession.create @user
     
     @mock = JcoruMock.new
+    @mock.report = TEST_REPORT
     @controller.jcoru_proxy = @mock 
   end
 
@@ -110,13 +111,7 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     create new_fixture
     assert_response :created
   end
-  
-  test "create should return forbidden for unauthenticated request" do
-    @session.destroy
-    create new_fixture
-    assert_response :unauthorized
-  end
-  
+    
   test "create should return a SolveAttempt with a new id" do
     create new_fixture
     id = JSON.parse(response.body)['id']
@@ -139,6 +134,11 @@ class SolveAttemptsControllerTest < ActionController::TestCase
     assert_response :bad_request
   end
   
+  test "create should store solve_attempt in database" do
+    create new_fixture
+    assert SolveAttempt.exists?(JSON.parse(response.body)['id'])
+  end
+  
   test "create should store source_files in database" do
     create new_fixture
     created_attempt = SolveAttempt.find(JSON.parse(response.body)['id'])
@@ -159,29 +159,24 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   end
   
   test "create should add the test report" do
-    @mock.report = TEST_REPORT
-    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
+    create new_fixture
     assert_equal TEST_REPORT, assigns(:solve_attempt).report
   end
   
   test "create should send exercise sources to jcoru" do
-    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
+    create new_fixture
     @solution.exercise.source_files.map { |sf| assert_includes @mock.test_files, sf } 
   end
   
   test "create should set solution for solve attempt" do
-    create SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
+    create new_fixture
     assert_equal @solution, assigns(:solve_attempt).solution
   end
   
   test "create should not accept overriding exercise sources" do
-    fail "tbd"
-    # test that response is bad request (or something else)
-  end
-  
-  test "create should not send overridden exercise sources to jcoru" do
-    fail "tbd"
-    # test that jcoru receives the files from the exercise.source_files
+    create SolveAttempt.new(:solution => @solution, :source_files => (@solution.exercise.source_files | source_files(:my_class, :my_class_test)))
+    assert_response :bad_request
+    assert_nil SolveAttempt.find_by(id: assigns(:solve_attempt).id)
   end
   
   private
@@ -208,6 +203,6 @@ class SolveAttemptsControllerTest < ActionController::TestCase
   end
   
   def new_fixture
-    fixture
+    SolveAttempt.new(:solution => @solution, :source_files => source_files(:my_class, :my_class_test))
   end
 end

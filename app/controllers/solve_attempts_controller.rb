@@ -23,27 +23,32 @@ class SolveAttemptsController < ResourceBaseController
   end
   
   def create
-    @solve_attempt = SolveAttempt.create(solution: @solution)
-    if @solve_attempt.valid?
+    @solve_attempt = SolveAttempt.new(solution: @solution)
+    if @solve_attempt.invalid?
+      render json: @solve_attempt.errors.messages, status: :bad_request and return
+    else
       source_files = @json['source_files'].map do |sf| 
         source_file = SourceFile.new sf
         source_file.source_set = @solve_attempt
         source_file
       end
+      
       if source_files.any? { |sf| sf.invalid? }
-        @solve_attempt.destroy
         errors = source_files.map {|sf| sf.errors.messages}
-        render json: {:source_files => errors}, status: :bad_request
+        render json: {:source_files => errors}, status: :bad_request and return
+        
+      elsif @solution.exercise.source_files.any? {|sf| source_files.any? {|override| sf.name == override.name}}
+        render json: {:source_files => "Not allowed to override exercise sources"}, status: :bad_request and return 
+        
       else 
-        source_files.each {|sf| sf.save!}
         @solve_attempt.report = @jcoru_proxy.run_junit(@solution.exercise.source_files | source_files)
+        
         @solve_attempt.save!
+        source_files.each {|sf| sf.save}
+        
         render action: :show, status: :created, :location => users_solution_solve_attempt_path(@solution.exercise_id, @solve_attempt.id)
       end
-    else
-      render json: @solve_attempt.errors.messages, status: :bad_request
     end
-    
   end
   
   private
