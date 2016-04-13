@@ -1,1 +1,1 @@
-json.extract! solve_attempt, :id, :created_at, :updated_at
+json.extract! solve_attempt, :id, :report, :created_at, :updated_at
