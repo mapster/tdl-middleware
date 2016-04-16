@@ -42,6 +42,7 @@ class SolveAttemptsController < ResourceBaseController
         
       else 
         @solve_attempt.report = @jcoru_proxy.run_junit(@solution.exercise.source_files | source_files)
+        check_report
         
         @solve_attempt.save!
         source_files.each {|sf| sf.save}
@@ -67,5 +68,14 @@ class SolveAttemptsController < ResourceBaseController
   
   def modifiable
     MODIFIABLE
+  end
+  
+  def check_report
+    report = @solve_attempt.report
+    if report[:server_error]
+      logger.error "Failed to run junit tests for solve_attempt #{@solve_attempt.id}: #{@solve_attempt.report}"
+    elsif report[:compilationReport].nil? && report[:junitReport].nil?
+      logger.error "Unknown junit test result type: #{@solve_attempt.report}"
+    end             
   end
 end
