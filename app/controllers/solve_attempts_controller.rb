@@ -12,7 +12,7 @@ class SolveAttemptsController < ResourceBaseController
   end
   
   def index
-    @solve_attempts = SolveAttempt.where(solution_id: @solution.id).order(created_at: :desc).limit(10).reverse
+    @solve_attempts = SolveAttempt.where(solution_id: @solution.id).order(created_at: :desc).limit(10)
   end
   
   def show
