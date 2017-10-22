@@ -1,0 +1,4 @@
+entrypoint: bundle exec rackup --port $PORT
+env: flex
+runtime: ruby
+service: tdl-middleware
