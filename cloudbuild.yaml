@@ -1,5 +1,5 @@
 secrets:
-    - kmsKeyName: projects/cpb100-177720/locations/global/keyRings/tdl-middleware/cryptoKeys/rails
+    - kmsKeyName: projects/cpb100-177720/locations/europe-west1/keyRings/tdl-middleware/cryptoKeys/rails
       secretEnv:
           RAILS_SECRET: CiQA0mryFPNe5HHLJPoIApz/WCU2zzzs+YiFHk08dhLZyxZH+CQSqgEAX48QnSNZ1LvnyNTaA6dXJlDyk5btpX4ouggYikBaJthmcwEZ86oZ/NbL6ncmYdihXPRq36J8pJwj2aPaoFXjWz1wljNa8XmJ5y1J0u7Z4iitpbJF59WWicdNPbdHNchSiVVNr3oqVS+1OQj2w+jeuWTYT/ri5gf7RnPa6ceggDCgqdlbqIMKNyrnep1DBFW1oNZDIP+7g8h/ULKpK6aO8kq3xfgzyxUOqA==
 
