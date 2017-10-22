@@ -1,0 +1,8 @@
+steps:
+    - name: 'ubuntu'
+      entrypoint: 'bash'
+      args: ['-c', 'echo Hallais']
+
+    - name: 'ubuntu'
+      entrypoint: 'bash'
+      args: ['-c', 'rails -version']
