@@ -5,4 +5,4 @@ steps:
 
     - name: 'ubuntu'
       entrypoint: 'bash'
-      args: ['-c', 'rails -version']
+      args: ['-c', 'ruby -version']
