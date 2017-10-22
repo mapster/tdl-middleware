@@ -6,7 +6,7 @@ secrets:
 steps:
     #  Build the Docker image.
     - name: gcr.io/cloud-builders/docker
-      args: ['build', '--build-arg', 'SECRET_KEY_BASE=$$SECRET_KEY_BASE', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.']
+      args: ['build', '--build-arg', 'SECRET_KEY_BASE=$SECRET_KEY_BASE', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.']
       secretEnv: ['SECRET_KEY_BASE']
       
     # Push it to GCR.
