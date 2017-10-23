@@ -15,9 +15,12 @@ COPY . /usr/src/app
 RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
+RUN bundle exec rake db:seed
+
 ENV RAILS_ENV=production
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
 ARG JCORU_URL
 ENV JCORU_URL ${JCORU_URL}
+
 CMD ["bundle", "exec", "rackup", "--port", "8080", "-o", "0.0.0.0"]
