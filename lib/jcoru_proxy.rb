@@ -1,10 +1,17 @@
 class JcoruProxy
-  
-  def initialize(url = Rails.configuration.jcoru_url)
-    @url = url
+
+  JCORU_URL_ENV = "JCORU_URL"
+
+  def initialize
+    jcoru_url = ENV[JCORU_URL_ENV]
+
+    raise "The JCORU_URL environment variable is not set" if jcoru_url.to_s.empty?
+
+    @url = "#{jcoru_url}/test"
   end  
   
   def run_junit files
+    puts "jcoru: #{@url}"
     begin
       response = HTTParty.post(@url,
         :body => (files.map {|f| {:filename => f.name, :sourcecode => f.contents}}).to_json,

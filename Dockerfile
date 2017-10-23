@@ -18,4 +18,6 @@ RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 
 ENV RAILS_ENV=production
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
+ARG JCORU_URL
+ENV JCORU_URL ${JCORU_URL}
 CMD ["bundle", "exec", "rackup", "--port", "8080", "-o", "0.0.0.0"]

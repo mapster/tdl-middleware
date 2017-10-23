@@ -23,7 +23,7 @@ module JcoruMiddleware
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     
-    config.jcoru_url = "http://localhost:8080/webapi/test"
+    #config.jcoru_url = "http://localhost:8080/test"
     #config.autoload_paths << Rails.root.join('lib')
     config.autoload_paths += %W(#{config.root}/lib)
   end
