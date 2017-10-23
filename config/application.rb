@@ -26,5 +26,8 @@ module JcoruMiddleware
     #config.jcoru_url = "http://localhost:8080/test"
     #config.autoload_paths << Rails.root.join('lib')
     config.autoload_paths += %W(#{config.root}/lib)
+
+    config.action_controller.relative_url_root = "/api"
+    config.relative_url_root = "/api"
   end
 end
