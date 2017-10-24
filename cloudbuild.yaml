@@ -11,7 +11,7 @@ steps:
         - '--build-arg'
         - 'SECRET_KEY_BASE=$$SECRET_KEY_BASE'
         - '--build-arg'
-        - 'JCORU_URL=$_JCORU_URL'
+        - JCORU_URL=$_JCORU_URL
         - '-t'
         - gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA
         - '.'
