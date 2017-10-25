@@ -1,0 +1,7 @@
+dispatch:
+    - url: "*/jcoru/*"
+      service: jcoru
+    - url: "*/api/*"
+      service: tdl-middleware
+    - url: "*/*"
+      service: default

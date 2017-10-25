@@ -12,6 +12,12 @@ steps:
         - 'SECRET_KEY_BASE=$$SECRET_KEY_BASE'
         - '--build-arg'
         - JCORU_URL=$_JCORU_URL
+        - '--build-arg'
+        - MYSQL_USER=$_MYSQL_USER
+        - '--build-arg'
+        - MYSQL_PASSWORD=$_MYSQL_PASSWORD
+        - '--build-arg'
+        - MYSQL_SOCKET_PATH=$_MYSQL_SOCKET_PATH
         - '-t'
         - gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA
         - '.'

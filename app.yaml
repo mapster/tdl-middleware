@@ -3,3 +3,7 @@ runtime: custom
 service: tdl-middleware
 automatic_scaling:
   min_num_instances: 1
+
+# !!! Needs to change between projects
+beta_settings:
+  cloud_sql_instances: cpb100-177720:europe-west1:tdl-middleware-rails
