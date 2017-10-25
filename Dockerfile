@@ -32,4 +32,6 @@ ENV MYSQL_PASSWORD ${MYSQL_PASSWORD}
 ARG MYSQL_SOCKET_PATH
 ENV MYSQL_SOCKET_PATH ${MYSQL_SOCKET_PATH}
 
-CMD ["bundle", "exec", "rake", "db:migrate", "bundle", "exec", "rackup", "--port", "8080", "-o", "0.0.0.0"]
+# TODO add this somewhere in the build
+# "bundle", "exec", "rake", "db:migrate", "&&",
+CMD ["bundle", "exec", "rackup", "--port", "8080", "-o", "0.0.0.0"]
