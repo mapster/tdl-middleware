@@ -5,7 +5,7 @@ class UserSessionsController < ResourceBaseController
     def show 
         @user = current_user
         if @user.nil?
-            render nothing: true, status: :not_found
+            render nothing: true, status: :unauthorized
         end
     end
 
