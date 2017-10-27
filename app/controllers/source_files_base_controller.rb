@@ -14,9 +14,10 @@ class SourceFilesBaseController < ResourceBaseController
     end
 
     def create
-        @source_file = @source_set.source_files.create!(@json)
+        @source_file = @source_set.source_files.new (@json)
 
         if @source_file.valid?
+            @source_file.save!
             render action: :show, status: :created, 
                 :location => source_file_path
         else
