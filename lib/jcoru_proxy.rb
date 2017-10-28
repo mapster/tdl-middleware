@@ -11,7 +11,6 @@ class JcoruProxy
   end  
   
   def run_junit files
-    puts "jcoru: #{@url}"
     begin
       response = HTTParty.post(@url,
         :body => (files.map {|f| {:filename => f.name, :sourcecode => f.contents}}).to_json,

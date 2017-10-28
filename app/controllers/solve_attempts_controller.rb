@@ -12,7 +12,7 @@ class SolveAttemptsController < ResourceBaseController
   end
   
   def index
-    @solve_attempts = SolveAttempt.where(solution_id: @solution.id).order(created_at: :desc).limit(10)
+    @solve_attempts = SolveAttempt.where(solution_id: @solution.id).order(created_at: :desc).limit(10).reverse
   end
   
   def show
@@ -72,9 +72,9 @@ class SolveAttemptsController < ResourceBaseController
   
   def check_report
     report = @solve_attempt.report
-    if report[:server_error]
+    if report["server_error"]
       logger.error "Failed to run junit tests for solve_attempt #{@solve_attempt.id}: #{@solve_attempt.report}"
-    elsif report[:compilationReport].nil? && report[:junitReport].nil?
+    elsif report["compilationReport"].nil? && report["junitReport"].nil?
       logger.error "Unknown junit test result type: #{@solve_attempt.report}"
     end             
   end
