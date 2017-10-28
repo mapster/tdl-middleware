@@ -41,12 +41,12 @@ class SourceFilesBaseController < ResourceBaseController
     
     private 
     
-    def unique_name
+    def unique_name (source_set = @source_set)
         sf = SourceFile.new @json
-        existing = @source_set.source_files.find_by(name: sf.name) 
+        existing = source_set.source_files.find_by(name: sf.name)
         # Verify that there either not exists any file with the name, or that if it does it is the same file (i.e. update)
         if existing && (@source_file.nil? || existing.id != @source_file.id) 
-          render plain: "Duplicate name: a source file with name #{sf.name} already exists", status: :conflict and return
+          render plain: "Duplicate name: a source file with name #{sf.name} already exists", status: :conflict
         end
     end
     

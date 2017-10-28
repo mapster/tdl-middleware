@@ -1,4 +1,10 @@
-class SolutionSourceFilesController < SourceFilesBaseController 
+class SolutionSourceFilesController < SourceFilesBaseController
+    before_filter :name_is_not_in_exercise_source_set, only: [:create, :update]
+
+    def name_is_not_in_exercise_source_set
+        unique_name Exercise.find_by(id: params[:solution_id])
+    end
+
     private
 
     def get_source_set
