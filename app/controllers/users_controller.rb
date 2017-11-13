@@ -11,13 +11,16 @@ class UsersController < ResourceBaseController
 
     def create
         user = User.new(@json)
+        user.active = true
+        user.approved = true
+        user.confirmed = true
 
         if user.valid? and user.save
             @user = user
+            @user.user_authorization = UserAuthorization.new
         else
             render json: user.errors.messages, status: :bad_request
         end
-        # render nothing: true, status: :forbidden
     end
 
     def update
@@ -26,11 +29,9 @@ class UsersController < ResourceBaseController
         elsif not @user.update(@json)
             render json: @user.errors.messages, status: :bad_request
         end
-        # render nothing: true, status: :not_found
     end
 
     def destroy
-            # render nothing: true, status: :not_found and return
         if @user.nil?
             render nothing: true, status: :not_found        
         elsif @user.destroy
