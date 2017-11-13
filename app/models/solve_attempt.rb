@@ -10,4 +10,20 @@ class SolveAttempt < ActiveRecord::Base
       JSON.parse r
     end
   end
+
+  def status
+    if report["server_error"]
+      "server_error"
+    elsif report["compilationReport"]
+      "compilation_error"
+    elsif report["junitReport"]
+      if report["junitReport"]["failures"].empty?
+        "success"
+      else
+        "junit_failure"
+      end
+    else
+      "unknown"
+    end
+  end
 end
