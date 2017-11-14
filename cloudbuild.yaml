@@ -1,5 +1,5 @@
 secrets:
-    - kmsKeyName: projects/cpb100-177720/locations/europe-west1/keyRings/tdl-middleware/cryptoKeys/rails
+    - kmsKeyName: projects/computas-universitet/locations/us-east1/keyRings/tdl-middleware/cryptoKeys/rails
       secretEnv:
           SECRET_KEY_BASE: CiQA7/gaqQILP5177MeCFqYaTJkitTddpugAyC2c5Ug1ygTmkIYSqgEAvPYZJbjOt2XNAdgw+TrMae4xzPGcB6PwpGeyTevFdsGez3W8BN/mfBxbI+LkJqX7U+440cACcZIlYhz7O/EvnVz8NuWuBDDYZNTz8a0AUKHalghq41kd6ZK0pD+aGQlhI8JmPM0Z47EuR0y/IhCurkH0JJOakU6iEU15UXXgR9oA2grpmTEJoyZ7Hb+9MKJnzwEsXvW8ALZj8ekPIqG/9EirJc5fLcq+PQ==
 
