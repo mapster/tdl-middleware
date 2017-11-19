@@ -15,7 +15,7 @@ COPY . /usr/src/app
 RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-ENV RAILS_ENV=production
+#ENV RAILS_ENV=production
 
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
