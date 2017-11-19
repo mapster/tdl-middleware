@@ -6,4 +6,4 @@ automatic_scaling:
 
 # !!! Needs to change between projects
 beta_settings:
-  cloud_sql_instances: cpb100-177720:europe-west1:tdl-middleware-rails
+  cloud_sql_instances: computas-universitet:us-east1:tdl-middleware-rails
