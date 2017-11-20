@@ -2,7 +2,7 @@ env: flex
 runtime: custom
 service: tdl-middleware
 automatic_scaling:
-  min_num_instances: 1
+  min_num_instances: 2
 
 # !!! Needs to change between projects
 beta_settings:
